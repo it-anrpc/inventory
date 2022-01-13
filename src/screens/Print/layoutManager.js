@@ -47,7 +47,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
     alignSelf: "stretch",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
   },
 });
