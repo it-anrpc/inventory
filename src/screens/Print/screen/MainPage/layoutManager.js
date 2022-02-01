@@ -9,10 +9,11 @@ import {
   Button,
   Text,
   useWindowDimensions,
+  TextInput,
+  TouchableOpacity,
 } from "react-native";
-
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-
+import DropDownList from "../../../../components/DropDownList/dropDownList";
 
 const PrintOldView = () => (
   <View style={{ flex: 1, backgroundColor: "#ff4081" }}>
@@ -21,16 +22,60 @@ const PrintOldView = () => (
   </View>
 );
 
-
 const PrintNewView = () => {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.mainPart}>
         <View style={[styles.card, styles.cardShadow]}>
-          
+          <View style={styles.dropDownPart}>
+            <View style={styles.titlePart}>
+              <Text
+                style={{ fontSize: 22, fontWeight: "bold", color: "#2a657c" }}
+              >
+                {"السنة المالية"}
+              </Text>
+            </View>
+
+            <View style={styles.selectionPart}>
+              <DropDownList />
+            </View>
+          </View>
+
+          <View style={styles.dropDownPart}>
+            <View style={styles.titlePart}>
+              <Text
+                style={{ fontSize: 22, fontWeight: "bold", color: "#2a657c" }}
+              >
+                {"رقم الأضافة المخزنية"}
+              </Text>
+            </View>
+
+            <View style={styles.selectionPart}>
+              <DropDownList />
+            </View>
+          </View>
         </View>
       </View>
-      <View style={styles.buttonPart}></View>
+      <View style={styles.buttonPart}>
+        <TouchableOpacity
+          style={{
+            flex: 1,
+            backgroundColor: "#0078B5",
+            maxHeight: 35,
+            alignItems: "center",
+            alignSelf: "stretch",
+            marginHorizontal:20,
+            borderRadius:5
+
+          }}
+          onPress={()=>{
+            alert("SDJLK")
+          }}
+        >
+          <TextInput />
+          <Text style={{fontSize:20,color:"white"}}>{"التالي"}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -84,15 +129,14 @@ export default function LayoutManager({ navigation }) {
 }
 const styles = StyleSheet.create({
   mainPart: {
-    flex: 3,
+    flex: 2,
     alignItems: "center",
     alignSelf: "stretch",
-    paddingHorizontal: 25,
+    paddingHorizontal: 15,
     paddingVertical: 15,
   },
   buttonPart: {
-    flex: 2,
-    backgroundColor: "blue",
+    flex: 1,
     alignItems: "center",
     alignSelf: "stretch",
   },
@@ -120,12 +164,26 @@ const styles = StyleSheet.create({
 
     elevation: 18,
   },
+
+  dropDownPart: {
+    flex: 1,
+    alignItems: "center",
+    alignSelf: "stretch",
+  },
+
+  titlePart: {
+    flex: 1,
+    alignItems: "flex-end",
+    justifyContent: "center",
+    alignSelf: "stretch",
+    padding: 5,
+  },
+
+  selectionPart: {
+    flex: 2,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "stretch",
+    padding: 5,
+  },
 });
-
-// <View style={styles.radioBtnPart}>
-// <Text>{"جديد"}</Text>
-// </View>
-
-// <View style={styles.radioBtnPart}>
-// <Text>{"جديد"}</Text>
-// </View>
