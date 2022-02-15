@@ -36,7 +36,7 @@ const homeButtons = [
       id: 2,
       title: "صرف",
       img: require(assetsDir + "dispatch.png"),
-      path: "dispatch",
+      path: "DispatchView",
       image_ratio: { aspectRatio: 2 },
     },
     {

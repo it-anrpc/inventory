@@ -15,6 +15,18 @@ import {
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import DropDownList from "../../../../components/DropDownList/dropDownList";
 
+let fyear = [
+  { id: 1, name: "2021_2022" },
+  { id: 2, name: "2022_2023" },
+];
+
+let edafaNumber = [
+  { id: 1, name: "1" },
+  { id: 2, name: "11" },
+  { id: 3, name: "15" },
+  { id: 4, name: "16" },
+];
+
 const PrintOldView = () => (
   <View style={{ flex: 1, backgroundColor: "#ff4081" }}>
     <View style={styles.mainPart}></View>
@@ -24,58 +36,41 @@ const PrintOldView = () => (
 
 const PrintNewView = () => {
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.mainPart}>
-        <View style={[styles.card, styles.cardShadow]}>
-          <View style={styles.dropDownPart}>
-            <View style={styles.titlePart}>
-              <Text
-                style={{ fontSize: 22, fontWeight: "bold", color: "#2a657c" }}
-              >
-                {"السنة المالية"}
-              </Text>
-            </View>
-
-            <View style={styles.selectionPart}>
-              <DropDownList />
-            </View>
-          </View>
-
-          <View style={styles.dropDownPart}>
-            <View style={styles.titlePart}>
-              <Text
-                style={{ fontSize: 22, fontWeight: "bold", color: "#2a657c" }}
-              >
-                {"رقم الأضافة المخزنية"}
-              </Text>
-            </View>
-
-            <View style={styles.selectionPart}>
-              <DropDownList />
-            </View>
-          </View>
-        </View>
+    <View
+      style={{
+        flex: 1,
+        paddingHorizontal: 10,
+        backgroundColor: "white",
+        marginTop:10,
+        marginBottom:2
+      }}
+    >
+      <View style={{ marginBottom: 10 }}>
+        <Text style={{ color: "#0078B5", fontSize: 22, fontWeight: "bold" }}>
+          {"سنة مالية"}
+        </Text>
       </View>
-      <View style={styles.buttonPart}>
-        <TouchableOpacity
-          style={{
-            flex: 1,
-            backgroundColor: "#0078B5",
-            maxHeight: 35,
-            alignItems: "center",
-            alignSelf: "stretch",
-            marginHorizontal:20,
-            borderRadius:5
+      <DropDownList data={fyear} />
 
-          }}
-          onPress={()=>{
-            alert("SDJLK")
-          }}
-        >
-          <TextInput />
-          <Text style={{fontSize:20,color:"white"}}>{"التالي"}</Text>
-        </TouchableOpacity>
+      <View style={{ marginBottom: 10 }}>
+        <Text style={{ color: "#0078B5", fontSize: 22, fontWeight: "bold" }}>
+          {"رقم الإضافة المخزنية"}
+        </Text>
       </View>
+      <DropDownList data={edafaNumber} />
+
+      <TouchableOpacity
+        style={{
+          backgroundColor: "#0078B5",
+          paddingVertical: 10,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>
+          {"التالي"}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };

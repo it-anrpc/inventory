@@ -8,9 +8,26 @@ import {
   ImageBackground,
   Button,
   Text,
+  useWindowDimensions,
+  TextInput,
+  TouchableOpacity,
 } from "react-native";
-import AppHeader from "../../components/header";
-import cache from "../../shared/cache";
+import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import DropDownList from "../../components/DropDownList/dropDownList";
+
+let fyear = [
+  { id: 1, name: "2021_2022" },
+  { id: 2, name: "2022_2023" },
+];
+
+let edafaNumber = [
+  { id: 1, name: "1" },
+  { id: 2, name: "20" },
+  { id: 3, name: "23" },
+  { id: 4, name: "24" },
+  { id: 4, name: "29" },
+  { id: 4, name: "31" },
+];
 
 export default function LayoutManager({ navigation }) {
   React.useEffect(() => {
@@ -19,15 +36,44 @@ export default function LayoutManager({ navigation }) {
   }, [navigation]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <AppHeader title={"صرف"}/>
-      </View>
+    <View style={{flex:1,alignSelf:"stretch",backgroundColor:"white"}}>
+      <View
+        style={{
+          flex: 1,
+          paddingHorizontal: 10,
+          backgroundColor: "white",
+          marginTop: 10,
+          marginBottom: 2,
+        }}
+      >
+        <View style={{ marginBottom: 10 }}>
+          <Text style={{ color: "#0078B5", fontSize: 22, fontWeight: "bold" }}>
+            {"سنة مالية"}
+          </Text>
+        </View>
+        <DropDownList data={fyear} />
 
-      <View style={styles.mainView}>
-        <Text>asjkdhajkshd</Text>
+        <View style={{ marginBottom: 10 }}>
+          <Text style={{ color: "#0078B5", fontSize: 22, fontWeight: "bold" }}>
+            {"رقم إذن الصرف"}
+          </Text>
+        </View>
+        <DropDownList data={edafaNumber} />
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#0078B5",
+            paddingVertical: 10,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>
+            {"التالي"}
+          </Text>
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 const styles = StyleSheet.create({
