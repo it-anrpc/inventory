@@ -13,36 +13,41 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import DropDownList from "../../../../components/DropDownList/dropDownList";
+import DropDownList from "../../../components/DropDownList/dropDownList";
+import cache from "../../../shared/cache";
 
-let fyear = [
-  { id: 1, name: "2021_2022" },
-  { id: 2, name: "2022_2023" },
-];
-
-let edafaNumber = [
-  { id: 1, name: "1" },
-  { id: 2, name: "11" },
-  { id: 3, name: "15" },
-  { id: 4, name: "16" },
-];
-
-const PrintOldView = () => (
+const PrintOldView = ({ navigation }) => (
   <View style={{ flex: 1, backgroundColor: "#ff4081" }}>
     <View style={styles.mainPart}></View>
     <View style={styles.buttonPart}></View>
   </View>
 );
 
-const PrintNewView = () => {
+const PrintNewView = ({ navigation, fyear, edafaNumber }) => {
+  const [selectedFyear, setSelectedFyear] = useState(null);
+  const [selectedEdafa, setSelectedEdafa] = useState(null);
+
+  const goToPrintDetails = () => {
+    if (selectedEdafa === null || selectedFyear === null) {
+      alert("لايمكن ترك رقم الاضافة او السنة المالية فارغة");
+      return;
+    }
+
+    navigation.navigate("PrintDetailsView", {
+      fyear: selectedFyear,
+      edafaNumber: selectedEdafa,
+      data: cache.get("edafat")[selectedFyear.name][selectedEdafa.name],
+    });
+  };
+
   return (
     <View
       style={{
         flex: 1,
         paddingHorizontal: 10,
         backgroundColor: "white",
-        marginTop:10,
-        marginBottom:2
+        marginTop: 10,
+        marginBottom: 2,
       }}
     >
       <View style={{ marginBottom: 10 }}>
@@ -50,16 +55,29 @@ const PrintNewView = () => {
           {"سنة مالية"}
         </Text>
       </View>
-      <DropDownList data={fyear} />
+      <DropDownList
+        data={fyear}
+        onSelect={(item) => {
+          setSelectedFyear(item);
+        }}
+        selectedItem={selectedFyear}
+      />
 
       <View style={{ marginBottom: 10 }}>
         <Text style={{ color: "#0078B5", fontSize: 22, fontWeight: "bold" }}>
           {"رقم الإضافة المخزنية"}
         </Text>
       </View>
-      <DropDownList data={edafaNumber} />
+      <DropDownList
+        data={edafaNumber}
+        onSelect={(item) => {
+          setSelectedEdafa(item);
+        }}
+        selectedItem={selectedEdafa}
+      />
 
       <TouchableOpacity
+        onPress={goToPrintDetails}
         style={{
           backgroundColor: "#0078B5",
           paddingVertical: 10,
@@ -75,11 +93,6 @@ const PrintNewView = () => {
   );
 };
 
-const renderScene = SceneMap({
-  oldPrint: PrintOldView,
-  newPrint: PrintNewView,
-});
-
 export default function LayoutManager({ navigation }) {
   // React.useEffect(() => {
   //   const unsubscribe = navigation.addListener("focus", () => {});
@@ -92,6 +105,23 @@ export default function LayoutManager({ navigation }) {
     { key: "oldPrint", title: "قديم" },
     { key: "newPrint", title: "جديد" },
   ]);
+
+  const renderScene = ({ route }) => {
+    switch (route.key) {
+      case "oldPrint":
+        return <PrintOldView navigation={navigation} />;
+      case "newPrint":
+        return (
+          <PrintNewView
+            navigation={navigation}
+            fyear={cache.get("Fyear")}
+            edafaNumber={cache.get("edafaNumbers")}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
   return (
     <TabView

@@ -2,7 +2,8 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeView from "../screens/Home/homeView";
-import PrintView from "../screens/Print/printView";
+import PrintView from "../screens/Print/MainPage/mainPrintPageView";
+import PrintDetailsView from "../screens/Print/PrintPageDetails/printPageDetailsView";
 import AddView from "../screens/Add/addView";
 import DispatchView from "../screens/Dispatch/dispatchView";
 const Stack = createStackNavigator();
@@ -22,6 +23,15 @@ const MainStackNavigator = () => {
       <Stack.Screen
         name="PrintView"
         component={PrintView}
+        options={{
+          headerShown: false,
+          tabBarVisible: true,
+          gesturesEnabled: false,
+        }}
+      />
+      <Stack.Screen
+        name="PrintDetailsView"
+        component={PrintDetailsView}
         options={{
           headerShown: false,
           tabBarVisible: true,

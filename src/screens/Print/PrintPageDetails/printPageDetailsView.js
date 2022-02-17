@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  VirtualizedList,
-  ScrollView,
   SafeAreaView,
   View,
-  ImageBackground,
-  Button,
-  Text,
 } from "react-native";
-import AppHeader from "../../components/header";
-import cache from "../../shared/cache";
-import MainPrintPageView from "./screen/MainPage/mainPrintPageView";
+import AppHeader from "../../../components/header";
+import cache from "../../../shared/cache";
+import LayoutManager from "./layoutManager";
 
-export default function LayoutManager({ navigation }) {
+export default function PrintPageDetailsView({ route,navigation }) {
+  
+  const {fyear,edafaNumber,data} = route.params
+
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {});
     return unsubscribe;
@@ -25,7 +23,7 @@ export default function LayoutManager({ navigation }) {
         <AppHeader title={"طباعة"} />
       </View>
       <View style={styles.mainView}>
-        <MainPrintPageView />
+        <LayoutManager navigation={navigation} fyear={fyear.name} edafaNumber={edafaNumber.name} data={data} />
       </View>
     </SafeAreaView>
   );
