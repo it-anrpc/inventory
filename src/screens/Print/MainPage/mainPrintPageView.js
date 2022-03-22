@@ -15,29 +15,14 @@ export default function MainPrintPageView({ navigation }) {
   }, [navigation]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <AppHeader title={"طباعة"} />
-      </View>
-      <View style={styles.mainView}>
+    <SafeAreaView style={styles.mainView}>
         <LayoutManager navigation={navigation} />
-      </View>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    alignSelf: "stretch",
-  },
   mainView: {
-    flex: 6,
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",

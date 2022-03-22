@@ -9,81 +9,67 @@ import {
   Button,
   Text,
 } from "react-native";
-import AppHeader from "../../components/header";
+import DropDownList from "../../components/DropDownList/dropDownList";
 import cache from "../../shared/cache";
+import SubView from "./components/subView";
 
-export default function LayoutManager({ navigation }) {
+export default function LayoutManager({ navigation, gardTypes }) {
+  const [selectedGardType, setSelectedGardType] = useState(null);
+  const [dropDownViewState, setDropDownViewState] = useState("flex");
+
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {});
     return unsubscribe;
   }, [navigation]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <AppHeader title={"الجرد"}/>
-      </View>
+    <SafeAreaView style={styles.mainView}>
+      <View style={styles.selectionContainer}>
+        <View>
+          <View style={{ marginBottom: 10 }}>
+            <Text style={styles.title}>{"نوع الجرد"}</Text>
+          </View>
 
-      <View style={styles.mainView}>
-        <Text>asjkdhajkshd</Text>
+          <DropDownList
+            data={gardTypes}
+            onSelect={(item) => {
+              setSelectedGardType(item);
+            }}
+            selectedItem={selectedGardType}
+          />
+        </View>
+      </View>
+      <View style={[styles.subViewContainer, { display: dropDownViewState }]}>
+        <SubView gardType={selectedGardType} />
       </View>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    alignSelf: "stretch",
-  },
   mainView: {
-    flex: 6,
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flex: 1,
+    justifyContent: "flex-start",
     alignItems: "center",
     alignSelf: "stretch",
+  },
+  selectionContainer: {
+    flex: 1,
+    maxHeight: 120,
+    alignSelf: "stretch",
+    zIndex: 100,
     paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingTop: 10,
   },
-
-  cardsView: {
+  subViewContainer: {
     flex: 1,
     flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "baseline",
-  },
-
-  card: {
-    flex: 1,
-    height: 150,
-    alignItems: "flex-start",
     alignSelf: "stretch",
+    alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "white",
-    borderRadius: 5,
-    padding: 10,
-    marginVertical: 10,
-    marginHorizontal: 5,
-    opacity: 0.8,
   },
-  cardShadow: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-
-    elevation: 8,
-  },
-  spaceBetween: {
-    margin: 2,
-    color: "black",
+  title: {
+    color: "#0078B5",
+    fontSize: 22,
+    fontWeight: "bold",
   },
 });

@@ -13,6 +13,7 @@ export default function LayoutManager({
   data = [],
   value = {},
   onSelect = () => {},
+  onDropDownPressed = (state) => {},
 }) {
   const [showOption, setShowOption] = useState(false);
 
@@ -26,6 +27,7 @@ export default function LayoutManager({
       <TouchableOpacity
         style={styles.dropDownStyle}
         onPress={() => {
+          onDropDownPressed(!showOption);
           setShowOption(!showOption);
         }}
       >
@@ -46,7 +48,7 @@ export default function LayoutManager({
             padding: 2,
             borderRadius: 6,
             maxHeight: 170,
-            marginBottom: data.length >= 4 ? 120 : 0
+            marginBottom: data.length >= 4 ? 120 : 0,
           }}
         >
           <ScrollView
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    
+
     elevation: 5,
   },
 });

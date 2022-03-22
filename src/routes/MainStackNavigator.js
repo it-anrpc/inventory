@@ -1,12 +1,36 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { View } from "react-native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeView from "../screens/Home/homeView";
 import PrintView from "../screens/Print/MainPage/mainPrintPageView";
 import PrintDetailsView from "../screens/Print/PrintPageDetails/printPageDetailsView";
-import AddView from "../screens/Add/addView";
-import DispatchView from "../screens/Dispatch/dispatchView";
-const Stack = createStackNavigator();
+import AddView from "../screens/Add/MainPage/mainAddView";
+import AddDetailsView from "../screens/Add/AddPageDetails/addPageDetailsView";
+import DispatchView from "../screens/Dispatch/MainPage/mainDispatchView";
+import SarfDetailsView from "../screens/Dispatch/SarfPageDetails/sarfPageDetailsView";
+import InventoryView from "../screens/Inventory/inventoryView";
+import AppHeader from "../components/header";
+
+const Stack = createNativeStackNavigator();
+
+function ShowHeader(props) {
+  return (
+    <View
+      style={{
+        flex: 1,
+        maxHeight: 70,
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: "center",
+        alignSelf: "stretch",
+        backgroundColor: "white",
+      }}
+    >
+      <AppHeader title={props.title} />
+    </View>
+  );
+}
 
 const MainStackNavigator = () => {
   return (
@@ -15,83 +39,74 @@ const MainStackNavigator = () => {
         name="HomeView"
         component={HomeView}
         options={{
-          headerShown: false,
           tabBarVisible: true,
           gesturesEnabled: false,
+          header: () => <ShowHeader title={"القائمة الرئيسية"} />,
         }}
       />
       <Stack.Screen
         name="PrintView"
         component={PrintView}
         options={{
-          headerShown: false,
           tabBarVisible: true,
           gesturesEnabled: false,
+          header: () => <ShowHeader title={"طباعة"} />,
         }}
       />
       <Stack.Screen
         name="PrintDetailsView"
         component={PrintDetailsView}
         options={{
-          headerShown: false,
           tabBarVisible: true,
           gesturesEnabled: false,
+          header: () => <ShowHeader title={"طباعة"} />,
         }}
       />
       <Stack.Screen
         name="AddView"
         component={AddView}
         options={{
-          headerShown: false,
           tabBarVisible: true,
           gesturesEnabled: false,
+          header: () => <ShowHeader title={"إضافة"} />,
+        }}
+      />
+      <Stack.Screen
+        name="AddDetailsView"
+        component={AddDetailsView}
+        options={{
+          tabBarVisible: true,
+          gesturesEnabled: false,
+          header: () => <ShowHeader title={"إضافة"} />,
         }}
       />
       <Stack.Screen
         name="DispatchView"
         component={DispatchView}
         options={{
-          headerShown: false,
           tabBarVisible: true,
           gesturesEnabled: false,
-        }}
-      />
-      {/* <Stack.Screen
-        name="PrintView"
-        component={PrintView}
-        options={{
-          headerShown: false,
-          tabBarVisible: true,
-          gesturesEnabled: false,
+          header: () => <ShowHeader title={"صرف"} />,
         }}
       />
       <Stack.Screen
-        name="PrintView"
-        component={PrintView}
+        name="SarfDetailsView"
+        component={SarfDetailsView}
         options={{
-          headerShown: false,
           tabBarVisible: true,
           gesturesEnabled: false,
+          header: () => <ShowHeader title={"صرف"} />,
         }}
       />
       <Stack.Screen
-        name="PrintView"
-        component={PrintView}
+        name="InventoryView"
+        component={InventoryView}
         options={{
-          headerShown: false,
           tabBarVisible: true,
           gesturesEnabled: false,
+          header: () => <ShowHeader title={"الجرد"} />,
         }}
       />
-      <Stack.Screen
-        name="PrintView"
-        component={PrintView}
-        options={{
-          headerShown: false,
-          tabBarVisible: true,
-          gesturesEnabled: false,
-        }}
-      /> */}
     </Stack.Navigator>
   );
 };

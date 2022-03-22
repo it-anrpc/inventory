@@ -5,12 +5,11 @@ import {
   View,
 } from "react-native";
 import AppHeader from "../../../components/header";
-import cache from "../../../shared/cache";
 import LayoutManager from "./layoutManager";
 
-export default function PrintPageDetailsView({ route,navigation }) {
+export default function SarfPageDetailsView({ route,navigation }) {
   
-  const {fyear,edafaNumber,data} = route.params
+  const {fyear,sarfNumber,data} = route.params
 
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {});
@@ -19,7 +18,7 @@ export default function PrintPageDetailsView({ route,navigation }) {
 
   return (
     <SafeAreaView style={styles.mainView}>
-        <LayoutManager navigation={navigation} fyear={fyear.name} edafaNumber={edafaNumber.name} data={data} />
+        <LayoutManager navigation={navigation} fyear={fyear.name} sarfNumber={sarfNumber.name} data={data} />
     </SafeAreaView>
   );
 }

@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  VirtualizedList,
-  ScrollView,
-  SafeAreaView,
   View,
-  ImageBackground,
-  Button,
   Text,
   useWindowDimensions,
-  TextInput,
   TouchableOpacity,
 } from "react-native";
-import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import { TabView, TabBar } from "react-native-tab-view";
 import DropDownList from "../../../components/DropDownList/dropDownList";
 import cache from "../../../shared/cache";
 
@@ -46,7 +40,7 @@ const PrintNewView = ({ navigation, fyear, edafaNumber }) => {
         flex: 1,
         paddingHorizontal: 10,
         backgroundColor: "white",
-        marginTop: 10,
+        paddingTop: 10,
         marginBottom: 2,
       }}
     >

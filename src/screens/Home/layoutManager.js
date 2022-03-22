@@ -43,7 +43,7 @@ const homeButtons = [
       id: 3,
       title: "الجرد",
       img: require(assetsDir + "inventory.png"),
-      path: "inventory",
+      path: "InventoryView",
       image_ratio: { aspectRatio: 2 },
     },
   ],
@@ -72,71 +72,19 @@ export default function LayoutManager({ navigation }) {
   }, [navigation]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <AppHeader title={"القائمة الرئيسية"}/>
-      </View>
-
-      <View style={styles.mainView}>
+    <SafeAreaView style={styles.mainView}>
         <HomeViewGenerator buttonArgs={homeButtons} navigation={navigation} />
-      </View>
     </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    alignSelf: "stretch",
-  },
   mainView: {
-    flex: 6,
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
     alignSelf: "stretch",
     paddingHorizontal: 15,
     paddingVertical: 10,
-  },
-
-  cardsView: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "baseline",
-  },
-
-  card: {
-    flex: 1,
-    height: 150,
-    alignItems: "flex-start",
-    alignSelf: "stretch",
-    justifyContent: "center",
-    backgroundColor: "white",
-    borderRadius: 5,
-    padding: 10,
-    marginVertical: 10,
-    marginHorizontal: 5,
-    opacity: 0.8,
-  },
-  cardShadow: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-
-    elevation: 8,
-  },
-  spaceBetween: {
-    margin: 2,
-    color: "black",
   },
 });

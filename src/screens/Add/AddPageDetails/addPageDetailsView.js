@@ -5,10 +5,9 @@ import {
   View,
 } from "react-native";
 import AppHeader from "../../../components/header";
-import cache from "../../../shared/cache";
 import LayoutManager from "./layoutManager";
 
-export default function PrintPageDetailsView({ route,navigation }) {
+export default function AddPageDetailsView({ route,navigation }) {
   
   const {fyear,edafaNumber,data} = route.params
 

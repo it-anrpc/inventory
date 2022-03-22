@@ -6,6 +6,14 @@ export default function DropDownList({
   data,
   selectedItem,
   onSelect,
+  onDropDownPressed,
 }) {
-  return <LayoutManager value={selectedItem} data={data} onSelect={onSelect} />;
+  return (
+    <LayoutManager
+      value={selectedItem}
+      data={data}
+      onSelect={onSelect}
+      onDropDownPressed={onDropDownPressed}
+    />
+  );
 }

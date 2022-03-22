@@ -1,4 +1,9 @@
 {
+  "gard_types":[
+    {"name":"continous","id":1},
+    {"name":"random","id":2},
+    {"name":"10%","id":3}
+  ],
   "Fyear": [
     { "id": 1, "name": "2021_2022" },
     { "id": 2, "name": "2022_2023" }
@@ -11,12 +16,63 @@
     { "id": 4, "name": "16" }
   ],
 
+  "sarfNumbers": [
+    { "id": 1, "name": "1" },
+    { "id": 2, "name": "24" }
+  ],
+
   "edafat": {
     "2021_2022": {
       "1": [
-        { "id": 0, "tsnif": "F1010203", "quan": 1 },
-        { "id": 1, "tsnif": "F1010208", "quan": 2 },
-        { "id": 2, "tsnif": "F1010232", "quan": 3 }
+        {
+          "id": 0,
+          "tsnif": "F1010203",
+          "quan": 1,
+          "desc": "GUIDE LINER  FOR FLOWSERVE VALVE 420-PV-301 , 402-FV-401 ,402-FV-400 , 400-TV-041 , 400-PV-043, 400-PV-026A, 400-LV-016,400-LV-007,400-HV-007,400-FV-024, 400-FV-019 , 400-FV-002",
+          "unit": "عدد"
+        },
+        {
+          "id": 1,
+          "tsnif": "F1010208",
+          "quan": 2,
+          "desc": "ANALOG OUTPUT 4-20MA",
+          "unit": "عدد"
+        },
+        {
+          "id": 2,
+          "tsnif": "F1010232",
+          "quan": 3,
+          "desc": "LOWER",
+          "unit": "عدد"
+        }
+      ]
+    }
+  },
+
+  "sarf": {
+    "2021_2022": {
+      "1": [
+        {
+          "id": 0,
+          "tsnif": "F1010203",
+          "quan": 1,
+          "desc": "GUIDE LINER  FOR FLOWSERVE VALVE 420-PV-301 , 402-FV-401 ,402-FV-400 , 400-TV-041 , 400-PV-043, 400-PV-026A, 400-LV-016,400-LV-007,400-HV-007,400-FV-024, 400-FV-019 , 400-FV-002",
+          "unit": "عدد"
+        },
+        {
+          "id": 1,
+          "tsnif": "F1010208",
+          "quan": 2,
+          "desc": "ANALOG OUTPUT 4-20MA",
+          "unit": "عدد"
+        },
+        {
+          "id": 2,
+          "tsnif": "F1010232",
+          "quan": 3,
+          "desc": "LOWER",
+          "unit": "عدد"
+        }
       ]
     }
   }

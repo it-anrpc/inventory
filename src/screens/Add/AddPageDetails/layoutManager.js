@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,10 +7,18 @@ import {
   FlatList,
   Vibration,
   Modal,
-  TouchableWithoutFeedback,
 } from "react-native";
-import CheckBox from "react-native-check-box";
+import HoneywellScanner from "react-native-honeywell-scanner-v2";
+import DataTable from "../../../components/dataTable";
 import EditQuanModal from "./components/editQuan";
+
+var tableHeader = [
+  { text: "رقم التصنيف", containerStyle: { flex: 1.2 } },
+  { text: "بيان التصنيف", containerStyle: { flex: 2 } },
+  { text: "الكمية" },
+  { text: "وحدة القياس" },
+  { text: "الكمية الفعلية" },
+];
 
 function DetailsComp({ title, value, styles }) {
   return (
@@ -25,90 +33,53 @@ function DetailsComp({ title, value, styles }) {
   );
 }
 
-function TableRowComp({
-  tsnif,
-  desc,
-  quan,
-  checked,
-  onSelectRow,
-  onChangePrintQuan,
-  printQuan,
-  index,
-}) {
+function TableRowComp({ tsnif, desc, quan, unit, scanedQuan, index }) {
   const [isShowModal, setIsShowModal] = useState(false);
   const [isExpanded, setIsExpanded] = useState(1);
-  const [lastPress, setLastPress] = useState(0);
 
   const closeModal = () => {
     setIsShowModal(false);
   };
-
-  const onCheck = (index) => {
-    Vibration.vibrate(18);
-    onSelectRow(index);
-  };
-
   return (
     <TouchableOpacity
-      onPress={() => {
-        onCheck(index);
-      }}
       onLongPress={() => {
         Vibration.vibrate(50);
-        setIsShowModal(true);
+        //setIsShowModal(true);
       }}
-      style={styles.tableRowContainer}
+      onPress={() => {
+        Vibration.vibrate(18);
+        if (desc.length > 9) {
+          setIsExpanded(isExpanded == 0 ? 1 : 0);
+        } else {
+          setIsExpanded(1);
+        }
+      }}
+      style={[
+        styles.tableRowContainer,
+        {
+          backgroundColor: scanedQuan == quan ? "#00ff00" : "white",
+        },
+      ]}
     >
-      <View
-        style={[
-          styles.tableColumnDataContainer,
-          {
-            flex: 2,
-            flexDirection: "row-reverse",
-            justifyContent: "flex-start",
-          },
-        ]}
-      >
-        <CheckBox
-          style={{ marginLeft: 7 }}
-          onClick={() => {
-            onCheck(index);
-          }}
-          isChecked={checked}
-          checkedCheckBoxColor="#01648e"
-          uncheckedCheckBoxColor="#7f7f7f"
-        />
+      <View style={[styles.tableColumnDataContainer, { flex: 1.2 }]}>
         <Text style={styles.tableRowText}>{tsnif}</Text>
       </View>
-
-      <TouchableOpacity
-        onPress={() => {
-          var delta = new Date().getTime() - lastPress;
-
-          if (delta < 200) {
-            Vibration.vibrate(18);
-            if (desc.length > 9) {
-              setIsExpanded(isExpanded == 0 ? 1 : 0);
-            } else {
-              setIsExpanded(1);
-            }
-          }
-          setLastPress(new Date().getTime());
-        }}
-        style={[styles.tableColumnDataContainer, { flex: 2 }]}
-      >
+      <View style={[styles.tableColumnDataContainer, { flex: 2 }]}>
         <Text
           style={[styles.tableRowText, { width: "80%" }]}
           numberOfLines={isExpanded}
         >
           {desc}
         </Text>
-      </TouchableOpacity>
+      </View>
       <View style={[styles.tableColumnDataContainer]}>
         <Text style={styles.tableRowText}>{quan}</Text>
       </View>
       <View style={[styles.tableColumnDataContainer]}>
-        <Text style={styles.tableRowText}>{printQuan}</Text>
+        <Text style={styles.tableRowText}>{unit}</Text>
+      </View>
+      <View style={[styles.tableColumnDataContainer]}>
+        <Text style={styles.tableRowText}>{scanedQuan}</Text>
       </View>
 
       <Modal
@@ -118,18 +89,11 @@ function TableRowComp({
         style={{ width: 320, height: 250 }}
         onRequestClose={closeModal}
       >
-        <EditQuanModal
-          closeModal={closeModal}
-          onApprove={onChangePrintQuan}
-          index={index}
-          minNum={1}
-          maxNum={quan}
-        />
+        <EditQuanModal closeModal={closeModal} />
       </Modal>
     </TouchableOpacity>
   );
 }
-
 export default function LayoutManager({
   navigation,
   fyear,
@@ -138,34 +102,59 @@ export default function LayoutManager({
 }) {
   const [tableData, setTableData] = useState(
     data.map((item) => {
-      item.checked = false;
-      item.printQuan = 1;
+      item.scanedQuan = 0;
+      var json = {
+        data: item,
+        style: [
+          { text: item.tsnif, containerStyle: { flex: 1.2 } },
+          { text: item.desc, containerStyle: { flex: 2 } },
+          { text: item.quan },
+          { text: item.unit },
+          { text: item.scanedQuan },
+        ],
+        isClickable: true,
+      };
 
-      return item;
+      return json;
     })
   );
 
-  const onSelectRow = (index) => {
-    tableData[index].checked = !tableData[index].checked;
+  useEffect(() => {
+    if (HoneywellScanner.isCompatible) {
+      HoneywellScanner.startReader().then((claimed) => {
+        console.log(
+          claimed ? "Barcode reader is claimed" : "Barcode reader is busy"
+        );
+        HoneywellScanner.onBarcodeReadSuccess((event) => {
+          console.log("Received data", event.data);
+          const tsnif = event.data.split("-")[0];
 
-    setTableData(JSON.parse(JSON.stringify(tableData)));
-  };
+          var datas = tableData.map((item) => {
+            if (item.data.tsnif === tsnif) {
+              console.log("a7aaaaaaaaaaaaaaa");
+              var temp = JSON.parse(JSON.stringify(item));
+              if (temp.data.scanedQuan < temp.data.quan) {
+                temp.data.scanedQuan = temp.data.scanedQuan + 1;
+              }
+              console.log(temp);
+              return temp;
+            }
 
-  const onSelectAll = () => {
-    var tempTableData = JSON.parse(JSON.stringify(tableData));
-    setTableData(
-      tempTableData.map((item) => {
-        item.checked = true;
-        return item;
-      })
-    );
-  };
+            return item;
+          });
 
-  const onChangePrintQuan = (index, quan) => {
-    tableData[index].printQuan = quan;
+          setTableData(datas);
+        });
+      });
 
-    setTableData(JSON.parse(JSON.stringify(tableData)));
-  };
+      return () => {
+        HoneywellScanner.stopReader().then(() => {
+          console.log("Freedom!!");
+          HoneywellScanner.offBarcodeReadSuccess();
+        });
+      };
+    }
+  });
 
   return (
     <View
@@ -183,51 +172,36 @@ export default function LayoutManager({
         />
         <DetailsComp title={"السنة المالية"} value={fyear} styles={styles} />
       </View>
-
-      <View style={{ flex: 1, alignSelf: "stretch" }}>
-        <View style={styles.tableHeaderContainer}>
-          <View style={[styles.tableTitleContainer, { flex: 2 }]}>
-            <Text style={styles.tableTitleText}>{"رقم التصنيف"}</Text>
-          </View>
-
-          <View style={[styles.tableTitleContainer, { flex: 2 }]}>
-            <Text style={styles.tableTitleText}>{"بيان التصنيف"}</Text>
-          </View>
-
-          <View style={[styles.tableTitleContainer]}>
-            <Text style={styles.tableTitleText}>{"الكمية"}</Text>
-          </View>
-
-          <View style={[styles.tableTitleContainer]}>
-            <Text style={styles.tableTitleText}>{"كمية الطباعة"}</Text>
-          </View>
-        </View>
+      <View
+        style={{
+          flex: 1,
+          alignSelf: "stretch",
+        }}
+      >
+        <DataTable tableHeaderData={tableHeader} data={tableData} />
+      </View>
+      {/* <View style={{ flex: 1, alignSelf: "stretch" }}>
         <FlatList
           data={tableData}
           renderItem={({ item, index }) => {
             return (
               <TableRowComp
                 tsnif={item.tsnif}
-                desc={item.desc}
                 quan={item.quan}
-                checked={item.checked}
-                printQuan={item.printQuan}
-                onSelectRow={onSelectRow}
-                onChangePrintQuan={onChangePrintQuan}
+                desc={item.desc}
+                unit={item.unit}
+                scanedQuan={item.scanedQuan}
                 index={index}
               />
             );
           }}
           keyExtractor={(item) => item.id}
         />
-      </View>
+      </View> */}
 
       <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.btn} onPress={onSelectAll}>
-          <Text style={styles.btnText}>{"اختيار الكل"}</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.btn}>
-          <Text style={styles.btnText}>{"طباعة"}</Text>
+          <Text style={styles.btnText}>{"إضافة"}</Text>
         </TouchableOpacity>
       </View>
     </View>
